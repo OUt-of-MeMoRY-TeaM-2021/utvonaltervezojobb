@@ -43,6 +43,9 @@ public class TerkepPanel extends JPanel implements ActionListener {
         this.addKeyListener(new MyKeyAdapter());
         //startMap();
     }
+	/*
+		ez egy teszt
+	*/
     /*
     public void startMap(){
         running = true;
