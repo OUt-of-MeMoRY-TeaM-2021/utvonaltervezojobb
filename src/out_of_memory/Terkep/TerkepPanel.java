@@ -43,9 +43,6 @@ public class TerkepPanel extends JPanel implements ActionListener {
         this.addKeyListener(new MyKeyAdapter());
         //startMap();
     }
-	/*
-		ez egy teszt
-	*/
     /*
     public void startMap(){
         running = true;
@@ -188,8 +185,8 @@ public class TerkepPanel extends JPanel implements ActionListener {
     public void FileWriter() {
         try {
             FileWriter writer = new FileWriter("Map.txt");
-            for (int x = 0; x<MAP_SIZE-1;x++) {
-                for (int y = 0; y<MAP_SIZE-1;y++) {
+            for (int y = 0; y<MAP_SIZE-1;y++) {
+                for (int x = 0; x<MAP_SIZE-1;x++) {
                     writer.write(ConvertColorToChar(X_Y[x][y]));
                 }
                 writer.write("\n");
@@ -205,8 +202,8 @@ public class TerkepPanel extends JPanel implements ActionListener {
         try {
             FileReader reader = new FileReader("Map.txt");
             int data;
-            for (int x = 0; x<MAP_SIZE;x++) {
-                for (int y = 0; y<MAP_SIZE;y++) {
+            for (int y = 0; y<MAP_SIZE;y++) {
+                for (int x = 0; x<MAP_SIZE;x++) {
                     data = reader.read();
                     X_Y[x][y] = ConvertCharToColor((char)data);
                     //System.out.print((char)data);
@@ -235,7 +232,7 @@ public class TerkepPanel extends JPanel implements ActionListener {
                 return Color.RED;
         }
         
-        return Color.BLACK;
+        return Color.BLUE;
     }
     
     public char ConvertColorToChar(Color c) {
