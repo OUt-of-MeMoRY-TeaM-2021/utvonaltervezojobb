@@ -31,7 +31,11 @@ public class TerkepPanel extends JPanel implements ActionListener {
     char charSzin;
     int MOUSE_X = 0, MOUSE_Y = 0;
     int forX = 0, forY = 0;
+    int carPosX, carPosY;
     boolean gridToggle = false;
+    boolean followToggle = false;
+    boolean editorToggle = true;
+    char direction = 'U';
     Timer timer;
     
     
@@ -76,8 +80,24 @@ public class TerkepPanel extends JPanel implements ActionListener {
         
         
         //Egérrel történő színezés
-        g.setColor(c);
-        g.fillRect(MOUSE_X*UNIT_SIZE,MOUSE_Y*UNIT_SIZE, UNIT_SIZE, UNIT_SIZE-UNIT_SIZE/2);
+        if (editorToggle) {
+            g.setColor(Color.RED);
+            switch (direction) {
+                case 'L': 
+                    g.fillRect(MOUSE_X*UNIT_SIZE,MOUSE_Y*UNIT_SIZE, UNIT_SIZE, UNIT_SIZE-UNIT_SIZE/2);
+                    break;
+                case 'R':
+                    g.fillRect(MOUSE_X*UNIT_SIZE,MOUSE_Y*UNIT_SIZE+UNIT_SIZE/2, UNIT_SIZE, UNIT_SIZE-UNIT_SIZE/2);
+                    break;
+                case 'U': 
+                    g.fillRect(MOUSE_X*UNIT_SIZE+UNIT_SIZE/2,MOUSE_Y*UNIT_SIZE, UNIT_SIZE-UNIT_SIZE/2, UNIT_SIZE);
+                    break;
+                case 'D': 
+                    g.fillRect(MOUSE_X*UNIT_SIZE,MOUSE_Y*UNIT_SIZE, UNIT_SIZE-UNIT_SIZE/2, UNIT_SIZE);
+                    break;
+            }
+        }
+        else g.setColor(c);
     }
       
     
@@ -94,12 +114,18 @@ public class TerkepPanel extends JPanel implements ActionListener {
         public void keyPressed(KeyEvent e) {
             switch(e.getKeyCode()) {
                 
+                // Kapcsolok
                 case KeyEvent.VK_G:
                     if (!gridToggle) gridToggle = true;
                     else gridToggle = false;
                     repaint();
                     break;
+                case KeyEvent.VK_SPACE:
+                    if (!followToggle) followToggle = true;
+                    else followToggle = false;
+                    break;
                 
+                // ZOOM
                 case KeyEvent.VK_ADD:
                     UNIT_SIZE++;
                     MAP_UNITS = (SCREEN_WIDTH / UNIT_SIZE) - 1;
@@ -113,7 +139,9 @@ public class TerkepPanel extends JPanel implements ActionListener {
                     }
                     repaint();
                     break;
-                
+                    
+                    
+                // MAP MOZGATÁS
                 case KeyEvent.VK_UP:
                     if(forY != 0) forY--;
                     repaint();
@@ -133,7 +161,7 @@ public class TerkepPanel extends JPanel implements ActionListener {
                     if(forY != MAP_SIZE-MAP_UNITS) forY++;
                     repaint();
                     break;
-                
+                // MENTÉS - BETÖLTÉS
                 case KeyEvent.VK_S:
                     FileWriter();
                     System.out.println("Saved!");
@@ -144,7 +172,7 @@ public class TerkepPanel extends JPanel implements ActionListener {
                     repaint();
                     System.out.println("Loaded!");
                     break;
-                
+                // SZIN KIVALASZTAS
                 case KeyEvent.VK_0:
                     c = Color.DARK_GRAY;
                     charSzin = '0';
@@ -168,6 +196,39 @@ public class TerkepPanel extends JPanel implements ActionListener {
                     charSzin = 'r';
                     System.out.println("Selected color: RED");
                     break;
+                // IRÁNYITAS
+                case KeyEvent.VK_NUMPAD6:
+                    if (X_Y[carPosX+1][carPosY] == Color.DARK_GRAY) {
+                        if(forX != MAP_SIZE-MAP_UNITS && followToggle) { forX++; carPosX++; }
+                        else { MOUSE_X++; carPosX++; }
+                        direction = 'R';
+                        repaint();
+                    }
+                    break;
+                case KeyEvent.VK_NUMPAD4:
+                    if (X_Y[carPosX-1][carPosY] == Color.DARK_GRAY) {
+                        if(forX != 0 && followToggle) { forX--; carPosX--; }
+                        else { MOUSE_X--; carPosX--; }     
+                        direction = 'L';
+                        repaint();
+                    }
+                    break;
+                case KeyEvent.VK_NUMPAD5:
+                    if (X_Y[carPosX][carPosY+1] == Color.DARK_GRAY) {
+                        if(forY != MAP_SIZE-MAP_UNITS && followToggle) { forY++; carPosY++; }
+                        else { MOUSE_Y++; carPosY++; }  
+                        direction = 'D';
+                        repaint();
+                    }
+                    break;
+                case KeyEvent.VK_NUMPAD8:
+                    if (X_Y[carPosX][carPosY-1] == Color.DARK_GRAY) {
+                        if(forY != 0 && followToggle) { forY--; carPosY--; }
+                        else { MOUSE_Y--; carPosY--; }
+                        direction = 'U';
+                        repaint();
+                    }
+                    break;
             }
         }
     }
@@ -177,7 +238,9 @@ public class TerkepPanel extends JPanel implements ActionListener {
         MOUSE_X = e.getX() / UNIT_SIZE;
         MOUSE_Y = e.getY() / UNIT_SIZE; 
         //System.out.println(e.getX()/25 + "," + e.getY()/25);
-        X_Y[MOUSE_X+forX][MOUSE_Y+forY] = c;
+        if (!editorToggle) X_Y[MOUSE_X+forX][MOUSE_Y+forY] = c;
+        carPosX = MOUSE_X;
+        carPosY = MOUSE_Y;
         repaint();
         }
     }
