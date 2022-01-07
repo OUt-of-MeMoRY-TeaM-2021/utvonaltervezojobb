@@ -34,7 +34,7 @@ public class TerkepPanel extends JPanel implements ActionListener {
     int carPosX, carPosY;
     boolean gridToggle = false;
     boolean followToggle = false;
-    boolean editorToggle = true;
+    boolean editorToggle = false;
     char direction = 'U';
     Timer timer;
     
@@ -80,7 +80,7 @@ public class TerkepPanel extends JPanel implements ActionListener {
         
         
         //Egérrel történő színezés
-        if (editorToggle) {
+        if (!editorToggle) {
             g.setColor(Color.RED);
             switch (direction) {
                 case 'L': 
@@ -163,8 +163,12 @@ public class TerkepPanel extends JPanel implements ActionListener {
                     break;
                 // MENTÉS - BETÖLTÉS
                 case KeyEvent.VK_S:
-                    FileWriter();
-                    System.out.println("Saved!");
+                    if (editorToggle)
+                    {
+                        FileWriter();
+                        System.out.println("Saved!");
+                    }
+                    
                     break;
                     
                 case KeyEvent.VK_L:
@@ -238,7 +242,7 @@ public class TerkepPanel extends JPanel implements ActionListener {
         MOUSE_X = e.getX() / UNIT_SIZE;
         MOUSE_Y = e.getY() / UNIT_SIZE; 
         //System.out.println(e.getX()/25 + "," + e.getY()/25);
-        if (!editorToggle) X_Y[MOUSE_X+forX][MOUSE_Y+forY] = c;
+        if (editorToggle) X_Y[MOUSE_X+forX][MOUSE_Y+forY] = c;
         carPosX = MOUSE_X;
         carPosY = MOUSE_Y;
         repaint();
