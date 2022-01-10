@@ -40,6 +40,8 @@ public class TerkepPanel extends JPanel implements ActionListener {
     char direction = 'D';
     Timer timer;
     ArrayList<PathFinder> Jarmu;
+    PathFinder end = new PathFinder(12,6);
+    PathFinder start = new PathFinder(5,4);
     
     TerkepPanel(){
         this.Jarmu = new ArrayList<>();
@@ -50,7 +52,7 @@ public class TerkepPanel extends JPanel implements ActionListener {
         this.addMouseListener(new MyMouseAdapter());
         this.addKeyListener(new MyKeyAdapter());
         FileReader();
-        startMap();
+        //startMap();
     }
     
     
@@ -84,16 +86,17 @@ public class TerkepPanel extends JPanel implements ActionListener {
         }
         
         //Útvonal kirajzolása
-        if (running) {
-            PathFinder start = new PathFinder(5,4);
-            PathFinder end = new PathFinder(12,6);
-            //start.setGrid(X_Y);
+        
+            
+            
+            start.setGrid(X_Y);
             ArrayList<PathFinder> path = start.Finder(start,end);
             g.setColor(Color.RED);
+            
             for (int i = 0; i < path.size();i++) {
-                g.fillRect(path.get(i).getX() * UNIT_SIZE, path.get(i).getY() * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE);
+                g.fillRect((path.get(i).getX() - forX) * UNIT_SIZE, (path.get(i).getY() - forY) * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE);
             }
-        }
+        
         
         
         
@@ -321,10 +324,10 @@ public class TerkepPanel extends JPanel implements ActionListener {
         public void mousePressed(MouseEvent e) {
         MOUSE_X = e.getX() / UNIT_SIZE;
         MOUSE_Y = e.getY() / UNIT_SIZE; 
-        //System.out.println(e.getX()/25 + "," + e.getY()/25);
         if (editorToggle) X_Y[MOUSE_X+forX][MOUSE_Y+forY] = c;
         carPosX = MOUSE_X + forX;
         carPosY = MOUSE_Y + forY;
+        end.setX_Y(MOUSE_X + forX,MOUSE_Y + forY);
         repaint();
         }
     }
