@@ -204,6 +204,11 @@ public class GrafikusFelulet extends javax.swing.JFrame {
         jButton5.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         jButton5.setForeground(new java.awt.Color(255, 255, 255));
         jButton5.setText("üzemanyag szint");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
         jLabel7.setText("Válassza ki az önnek megfelelő menüpontot a folytatáshoz!");
@@ -467,6 +472,11 @@ public class GrafikusFelulet extends javax.swing.JFrame {
         balesetreport report =new balesetreport();
         report.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+      Uzemanyag uzemanyag = new Uzemanyag();
+       uzemanyag.setVisible(true);
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     public static void main(String args[]) {
         try {
