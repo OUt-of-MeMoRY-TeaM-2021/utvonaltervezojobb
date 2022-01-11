@@ -3,6 +3,7 @@ package out_of_memory;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import javax.swing.ImageIcon;
+import out_of_memory.Terkep.TerkepFrame;
 
 
 public class GrafikusFelulet extends javax.swing.JFrame {
@@ -11,14 +12,16 @@ public class GrafikusFelulet extends javax.swing.JFrame {
     
     public GrafikusFelulet() {
         this.setUndecorated(true);
-        this.setAlwaysOnTop(true);
-        this.setResizable(false);
+        this.setAlwaysOnTop(false);
+        this.setResizable(true);
         //this.Visible(true);
         initComponents();
+        
         Toolkit tk = Toolkit.getDefaultToolkit();
                 int xsize = (int) tk.getScreenSize().getWidth();
                 int ysize = (int) tk.getScreenSize().getHeight();
         this.setSize(xsize,ysize);
+        
         Logo.setText("");
         Logo.setIcon(imageLogo);
     }
@@ -44,7 +47,7 @@ public class GrafikusFelulet extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         textField1 = new java.awt.TextField();
         TerkepPanel = new javax.swing.JPanel();
-        jButton6 = new javax.swing.JButton();
+        terkepopen = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -81,6 +84,11 @@ public class GrafikusFelulet extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jButton1.setText("Tervezés");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel5.setText("Útvonal választó");
@@ -107,8 +115,13 @@ public class GrafikusFelulet extends javax.swing.JFrame {
             .addGap(0, 608, Short.MAX_VALUE)
         );
 
-        jButton6.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        jButton6.setText("Térkép megnyitása");
+        terkepopen.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        terkepopen.setText("Térkép megnyitása");
+        terkepopen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                terkepopenActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -127,17 +140,16 @@ public class GrafikusFelulet extends javax.swing.JFrame {
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 449, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(terkepopen, javax.swing.GroupLayout.PREFERRED_SIZE, 449, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(TerkepPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(TerkepPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(34, 34, 34)
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel4)
@@ -152,9 +164,12 @@ public class GrafikusFelulet extends javax.swing.JFrame {
                         .addGap(44, 44, 44)
                         .addComponent(jLabel3)
                         .addGap(43, 43, 43)
-                        .addComponent(textField1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 94, Short.MAX_VALUE)
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(textField1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addComponent(TerkepPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                .addComponent(terkepopen, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(70, 70, 70))
         );
 
@@ -169,11 +184,21 @@ public class GrafikusFelulet extends javax.swing.JFrame {
         jButton3.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("rakomány");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setBackground(new java.awt.Color(0, 0, 0));
         jButton4.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         jButton4.setForeground(new java.awt.Color(255, 255, 255));
         jButton4.setText("baleset, meghibásodás");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setBackground(new java.awt.Color(0, 0, 0));
         jButton5.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
@@ -391,7 +416,7 @@ public class GrafikusFelulet extends javax.swing.JFrame {
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 882, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel4Layout.createSequentialGroup()
                     .addGap(21, 21, 21)
@@ -424,6 +449,24 @@ public class GrafikusFelulet extends javax.swing.JFrame {
     private void textField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_textField1ActionPerformed
+
+    private void terkepopenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_terkepopenActionPerformed
+       new TerkepFrame();
+    }//GEN-LAST:event_terkepopenActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+  
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    Rakomany rakomanyscreen= new Rakomany();
+    rakomanyscreen.setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        balesetreport report =new balesetreport();
+        report.setVisible(true);
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     public static void main(String args[]) {
         try {
@@ -461,7 +504,6 @@ public class GrafikusFelulet extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -481,6 +523,7 @@ public class GrafikusFelulet extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField3;
+    private javax.swing.JButton terkepopen;
     private java.awt.TextField textField1;
     // End of variables declaration//GEN-END:variables
 }

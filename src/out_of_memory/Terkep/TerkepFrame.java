@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 
 public class TerkepFrame extends JFrame {
     
-    TerkepFrame(){
+   public TerkepFrame(){
         this.add(new TerkepPanel());
         this.setTitle("Terkep");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
