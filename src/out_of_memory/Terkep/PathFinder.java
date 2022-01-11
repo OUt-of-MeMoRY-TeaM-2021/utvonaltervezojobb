@@ -29,8 +29,13 @@ public class PathFinder {
         this.f = 0;
         this.g = 0;
         this.h = 0;
-        this.type = Color.DARK_GRAY;
+        this.type = null;
         this.neighbors = new ArrayList<>();
+        this.previous = null;
+    }
+    public void setX_Y(int _x, int _y) {
+        this.x = _x;
+        this.y = _y;
     }
     public int getX () {
         return this.x;
@@ -39,12 +44,15 @@ public class PathFinder {
         return this.y;
     }
     public void setGrid (Color[][] map) {
+        //System.out.println("teszt");
         try {
             FileReader reader = new FileReader("Map.txt");
             int data;
             for (int y = 0; y<MAP_SIZE;y++) {
                 for (int x = 0; x<MAP_SIZE;x++) {
                     data = reader.read();
+                    PathFinder t = new PathFinder(x,y);
+                    grid[x][y] = t;
                     grid[x][y].type = ConvertCharToColor((char)data);
                 }
             }
@@ -78,69 +86,81 @@ public class PathFinder {
         int x = this.x;
         int y = this.y;
         
-        if (grid[x][y].type == Color.DARK_GRAY && x < MAP_SIZE-1) this.neighbors.add(grid[x + 1][y]);
-        if (grid[x][y].type == Color.DARK_GRAY && x > 0) this.neighbors.add(grid[x - 1][y]);
-        if (grid[x][y].type == Color.DARK_GRAY && y < MAP_SIZE-1) this.neighbors.add(grid[x][y + 1]);
-        if (grid[x][y].type == Color.DARK_GRAY && y > 0) this.neighbors.add(grid[x][y - 1]);
+        if (x < MAP_SIZE-1) if (grid[x + 1][y].type == Color.DARK_GRAY) this.neighbors.add(grid[x + 1][y]);
+        if (x > 0) if (grid[x - 1][y].type == Color.DARK_GRAY) this.neighbors.add(grid[x - 1][y]);
+        if (y < MAP_SIZE-1) if (grid[x][y + 1].type == Color.DARK_GRAY) this.neighbors.add(grid[x][y + 1]);
+        if (y > 0) if (grid[x][y - 1].type == Color.DARK_GRAY) this.neighbors.add(grid[x][y - 1]);
     }
     
     public ArrayList<PathFinder> Finder(PathFinder start, PathFinder end) {
         this.createMyList(start);
+        this.addNeighbors(grid);
         PathFinder current = start;
-        
-        if (openSet.size() > 0) {
+        do 
+        {
+            if (openSet.size() > 0) {
             
-            int winner = 0;
-            for (int i = 0; i < openSet.size();i++) {
-                if (openSet.get(i).f < openSet.get(winner).f) winner = i;
-            }
-            current = openSet.get(winner);
-            
-            
-            if (current == end) { // Ha megérkeztünk uticélunkhoz akkor..
+                int winner = 0;
+                for (int i = 0; i < openSet.size();i++) {
+                    if (openSet.get(i).f < openSet.get(winner).f) winner = i;
+                }
+                current = openSet.get(winner);
                 
-                System.out.println("Done!");
-            }
-            // Ha nem értünk célba akkor vizsgáltá teszi az adott mezőt.
-            openSet.remove(current);
-            closedSet.add(current);
-            
-            //Lehet itt kellene megkeresni a szomszédos mezőket.
-           
-            ArrayList<PathFinder> szomszedok = current.neighbors;
-            int tempG = 0;
-            for (int i = 0; i < szomszedok.size();i++) {         
-               PathFinder szomszed = szomszedok.get(i);
-               if (!closedSet.contains(szomszed)) { // Ha a szomszédos terület még nem bejárt akkor..
-                   tempG = current.g + 1;
-                   
-                   if (tempG < szomszed.g) { // Ha a már bejárt mezőt meg tudjuk közelíteni rövidebb úton, akkor..
-                       szomszed.g = tempG;
-                   } 
-                } else { // Ha még nem jártuk be akkor most bejárjuk
-                   szomszed.g = tempG;
-                   openSet.add(szomszed);
+                if (current.x == end.getX() && current.y == end.getY()) { // Ha megérkeztünk uticélunkhoz akkor..
+                    ArrayList<PathFinder> path = new ArrayList<>();
+                    PathFinder temp = current;
+                    path.add(temp);
+
+                    while (temp.previous != null) {
+                        path.add(temp.previous);
+                        temp = temp.previous;
+                    }
+                    System.out.println(path.size());
+                    System.out.println("Done!");
+                    
+                    return path;
+                    
+                    
                 }
-               
-                szomszed.h = heuristic(szomszed, end);
-                szomszed.f = szomszed.g + szomszed.h;
+                // Ha nem értünk célba akkor vizsgáltá teszi az adott mezőt.
+                openSet.remove(current);
+                closedSet.add(current);
+
+                ArrayList<PathFinder> szomszedok = current.neighbors;
+                int tempG = 0;
+                for (int i = 0; i < szomszedok.size();i++) {
+                    PathFinder szomszed = szomszedok.get(i);
+                    if (!closedSet.contains(szomszed)) { // Ha a szomszédos terület még nem bejárt akkor..
+                       tempG = current.g + 1;
+                       szomszed.previous = current;
+                        if (tempG < szomszed.g) {
+                            szomszed.g = tempG;
+                        }
+                        else { // Következő lehetőség(ek)
+                        szomszed.g = tempG;
+                        openSet.add(szomszed);
+                        } 
+                    }
+
+                    szomszed.h = heuristic(szomszed, end);
+                    szomszed.f = szomszed.g + szomszed.h;
+                    
+                    
+                    //System.out.println("f: "+szomszed.f+"g: "+szomszed.g+"h: "+szomszed.h);
+                }
+            
+            } else {
+
+
+                //no solution
             }
-            
-        } else {
-            
-            
-            //no solution
         }
-        //Az útvonal kirajzolása
-        ArrayList<PathFinder> path = new ArrayList<>();
-                PathFinder temp = current;
-                path.add(temp);
-                while (previous != null) {
-                    path.add(previous);
-                    temp = previous;
-                }
+        while (openSet.size() > 0);
         
-        return path;
+        //Az útvonal kirajzolása
+        
+        
+        return openSet;
         
     }
     
