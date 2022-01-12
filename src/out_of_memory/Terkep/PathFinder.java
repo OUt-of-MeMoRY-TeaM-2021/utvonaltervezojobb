@@ -1,3 +1,4 @@
+
 package out_of_memory.Terkep;
 
 import java.awt.Color;
@@ -15,9 +16,8 @@ public class PathFinder {
     private double h;
     protected Color type;
     private PathFinder [][] grid = new PathFinder[MAP_SIZE][MAP_SIZE];
-    
     private ArrayList<PathFinder> neighbors;
-    private PathFinder previous;
+    public PathFinder previous;
     private ArrayList<PathFinder> openSet = new ArrayList<>();
     private ArrayList<PathFinder> closedSet = new ArrayList<>();
     
